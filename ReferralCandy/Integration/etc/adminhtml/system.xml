@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="referralcandy" translate="label" sortOrder="500">
+            <label>ReferralCandy</label>
+        </tab>
+
+        <section id="referralcandy" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>General</label>
+            <tab>referralcandy</tab>
+            <resource>ReferralCandy_Integration::config</resource>
+            <group id="rc_general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General Configuration</label>
+                <field id="enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Module Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Please make sure that all your keys have been added first before enabling. Keys can be found on your ReferralCandy dashboard's integration page.</comment>
+                </field>
+
+                <field id="app_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>APP ID</label>
+                    <validate>required-entry no-whitespace</validate>
+                </field>
+
+                <field id="api_access_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Access ID</label>
+                    <validate>required-entry no-whitespace</validate>
+                </field>
+
+                <field id="api_secret_key" translate="label" type="password" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Secret Key</label>
+                    <validate>required-entry no-whitespace</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
