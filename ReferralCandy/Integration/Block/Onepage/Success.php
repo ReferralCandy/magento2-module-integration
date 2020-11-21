@@ -5,6 +5,15 @@ use ReferralCandy\Integration\Helper\Configuration;
 
 class Success extends \Magento\Checkout\Block\Onepage\Success
 {
+    protected $_locale;
+    protected $_escaper;
+    protected $_configurationHelper;
+    protected $_enabled;
+    protected $_appId;
+    protected $_apiAccessId;
+    protected $_apiSecretKey;
+    protected $_order;
+
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Checkout\Model\Session $checkoutSession,
