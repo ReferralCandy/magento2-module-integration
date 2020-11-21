@@ -1,0 +1,13 @@
+{
+    "name": "referralcandy/integration",
+    "description": "An extension to integrate ReferralCandy on your Magento store",
+    "type": "magento2-module",
+    "authors": [
+        {
+            "name": "ReferralCandy",
+            "email": "engineering@referralcandy.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
