@@ -1,7 +1,7 @@
 <?php
-namespace ReferralCandy\MagentoIntegration\Block\Onepage;
+namespace ReferralCandy\Integration\Block\Onepage;
 
-use ReferralCandy\MagentoIntegration\Helper\Configuration;
+use ReferralCandy\Integration\Helper\Configuration;
 
 class Success extends \Magento\Checkout\Block\Onepage\Success
 {

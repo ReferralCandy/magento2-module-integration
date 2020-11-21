@@ -1,8 +1,8 @@
 <?php
-namespace ReferralCandy\MagentoIntegration\Test\Unit\Block\Onepage;
+namespace ReferralCandy\Integration\Test\Unit\Block\Onepage;
 
 use PHPUnit\Framework\TestCase;
-use ReferralCandy\MagentoIntegration\Block\Onepage\Success;
+use ReferralCandy\Integration\Block\Onepage\Success;
 
 class SuccessTest extends TestCase
 {

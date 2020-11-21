@@ -3,7 +3,7 @@
  * Helper file for fetching ReferralCandy account keys
  */
 
-namespace ReferralCandy\MagentoIntegration\Helper;
+namespace ReferralCandy\Integration\Helper;
 
 class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
 {
