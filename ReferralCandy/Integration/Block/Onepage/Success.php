@@ -2,6 +2,7 @@
 namespace ReferralCandy\Integration\Block\Onepage;
 
 use ReferralCandy\Integration\Helper\Configuration;
+
 class Success extends \Magento\Checkout\Block\Onepage\Success
 {
     public function __construct(
@@ -10,11 +11,13 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
         \Magento\Sales\Model\Order\Config $orderConfig,
         \Magento\Framework\App\Http\Context $httpContext,
         \Magento\Framework\Locale\Resolver $locale,
+        \Magento\Framework\Escaper $escaper,
         Configuration $configurationHelper,
         array $data = []
     ) {
         parent::__construct($context, $checkoutSession, $orderConfig, $httpContext, $data);
         $this->_locale                  = $locale;
+        $this->_escaper                 = $escaper;
         $this->_configurationHelper     = $configurationHelper;
         $this->_enabled                 = boolval($this->_configurationHelper->getGeneralConfig('enabled'));
         $this->_appId                   = $this->_configurationHelper->getGeneralConfig('app_id');
@@ -23,11 +26,17 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
         $this->_order                   = $this->_checkoutSession->getLastRealOrder();
     }
 
-    private function shouldTriggerJsPurchase()
+    /**
+     * Check whether the purchase script should be rendered and triggered
+     */
+    public function shouldTriggerJsPurchase()
     {
         return $this->_enabled && !empty($this->_appId) && !empty($this->_apiSecretKey);
     }
 
+    /**
+     * Get customer's first name, or generate one from their email
+     */
     private function getOrGenerateFirstName()
     {
         if (!empty($this->_order->getCustomerFirstName())) {
@@ -39,12 +48,10 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
         }
     }
 
-    public function displayLocaleCode() {
-        $localeCode = $this->_locale->getLocale();
-        echo "LOCALE: $localeCode";
-    }
-
-    private function generateLocaleData()
+    /**
+     * Get store's locale and convert it to ReferralCandy mapping if necessary
+     */
+    private function getStoreLocale()
     {
         $localeMapping = [ // Map to ReferralCandy format
             'zh_Hans_CN'    => 'zh-CN',
@@ -61,42 +68,41 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
             } else {
                 $locale = strstr($locale, '_', true); // Example: en_US > en
             }
-
-            return "data-locale='$locale'";
         }
 
-        return ''; // Do not add data-locale to assign campaign's default
+        return $locale;
     }
 
-    public function generateRcDiv()
+    /**
+     * Generate required div data for the purchase script
+     */
+    public function divData()
     {
-        if ($this->shouldTriggerJsPurchase() === true) {
-            $id                     = $this->_order->getId();
-            $firstName              = $this->getOrGenerateFirstName();
-            $lastName               = $this->_order->getCustomerLastName();
-            $email                  = $this->_order->getCustomerEmail();
-            $subtotal               = $this->_order->getSubtotal();
-            $generatedLocaleData    = $this->generateLocaleData();
-            $currencyCode           = $this->_order->getOrderCurrencyCode();
-            $orderTimestamp         = strtotime($this->_order->getCreatedAt());
+        $divData = [
+            'appId'          => $this->_appId,
+            'orderId'        => $this->_order->getId(),
+            'firstName'      => $this->getOrGenerateFirstName(),
+            'lastName'       => $this->_order->getCustomerLastName(),
+            'email'          => $this->_order->getCustomerEmail(),
+            'subtotal'       => $this->_order->getSubtotal(),
+            'locale'         => $this->getStoreLocale(),
+            'currencyCode'   => $this->_order->getOrderCurrencyCode(),
+            'orderTimestamp' => strtotime($this->_order->getCreatedAt())
+        ];
 
-            $signatureParams = [
-                $email,
-                $firstName,
-                $subtotal,
-                $orderTimestamp,
-                $this->_apiSecretKey
-            ];
-            $signature = md5(join(',', $signatureParams));
+        $signatureParams = [
+            $divData['email'],
+            $divData['firstName'],
+            $divData['subtotal'],
+            $divData['orderTimestamp'],
+            $this->_apiSecretKey
+        ];
 
-            echo "<div id='refcandy-mint' data-app-id='$this->_appId' data-fname='$firstName' data-lname='$lastName' data-email='$email' data-amount='$subtotal' $generatedLocaleData data-currency='$currencyCode' data-timestamp='$orderTimestamp' data-external-reference-id='$id' data-signature='$signature' ></div>";
-        }
+        /**
+         * MD5 is used by ReferralCandy to generate a signature
+         */
+        $divData['signature'] = md5(join(',', $signatureParams));
+
+        return $divData;
     }
-
-    public  function generateRcJs()
-    {
-        if ($this->shouldTriggerJsPurchase() === true) {
-            echo "<script>(function(e){var t,n,r,i,s,o,u,a,f,l,c,h,p,d,v;z='script';l='refcandy-purchase-js';c='refcandy-mint';p='go.referralcandy.com/purchase/';t='data-app-id';r={email:'a',fname:'b',lname:'c',amount:'d',currency:'e','accepts-marketing':'f',timestamp:'g','referral-code':'h',locale:'i','external-reference-id':'k',signature:'ab'};i=e.getElementsByTagName(z)[0];s=function(e,t){if(t){return''+e+'='+encodeURIComponent(t)}else{return''}};d=function(e){return''+p+h.getAttribute(t)+'.js?aa=75&'};if(!e.getElementById(l)){h=e.getElementById(c);if(h){o=e.createElement(z);o.id=l;a=function(){var e;e=[];for(n in r){u=r[n];v=h.getAttribute('data-'+n);e.push(s(u,v))}return e}();o.src='//'+d(h.getAttribute(t))+a.join('&');return i.parentNode.insertBefore(o,i)}}})(document);</script>";
-        }
-    }
-  }
+}

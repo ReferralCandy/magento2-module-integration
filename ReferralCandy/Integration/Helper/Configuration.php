@@ -1,11 +1,17 @@
 <?php
+/**
+ * Helper file for fetching ReferralCandy account keys
+ */
+
 namespace ReferralCandy\Integration\Helper;
 
 class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    const XLM_PATH_REFERRALCANDY = 'referralcandy/';
 
-    const XML_PATH_HELLOWORLD = 'referralcandy/';
-
+    /**
+     * Helper function to get config values
+     */
     public function getConfigValue($field, $storeId = null)
     {
         return $this->scopeConfig->getValue(
@@ -15,9 +21,14 @@ class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
+    /**
+     * Helper function to get config values from general configuration
+     */
     public function getGeneralConfig($code, $storeId = null)
     {
-        return $this->getConfigValue(self::XML_PATH_HELLOWORLD .'rc_general/'. $code, $storeId);
+        return $this->getConfigValue(
+            self::XLM_PATH_REFERRALCANDY .'rc_general/'. $code,
+            $storeId
+        );
     }
-
 }

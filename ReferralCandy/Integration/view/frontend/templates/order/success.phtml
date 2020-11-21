@@ -1,2 +1,16 @@
-<?php $block->generateRcDiv(); ?>
-<?php $block->generateRcJs(); ?>
+<?php if ($block->shouldTriggerJsPurchase()): ?>
+    <?php $divData = $block->divData(); ?>
+    <div id='refcandy-mint'
+        data-app-id='<?= $block->escapeHtml($divData['appId']); ?>'
+        data-fname='<?= $block->escapeHtml($divData['firstName']); ?>'
+        data-lname='<?= $block->escapeHtml($divData['lastName']); ?>'
+        data-email='<?= $block->escapeHtml($divData['email']); ?>'
+        data-amount='<?= $block->escapeHtml($divData['subtotal']); ?>'
+        data-locale='<?= $block->escapeHtml($divData['locale']); ?>'
+        data-currency='<?= $block->escapeHtml($divData['currencyCode']); ?>'
+        data-timestamp='<?= $block->escapeHtml($divData['orderTimestamp']); ?>'
+        data-external-reference-id='<?= $block->escapeHtml($divData['orderId']); ?>'
+        data-signature='<?= $block->escapeHtml($divData['signature']); ?>' ></div>
+
+    <script>(function(e){var t,n,r,i,s,o,u,a,f,l,c,h,p,d,v;z='script';l='refcandy-purchase-js';c='refcandy-mint';p='go.referralcandy.com/purchase/';t='data-app-id';r={email:'a',fname:'b',lname:'c',amount:'d',currency:'e','accepts-marketing':'f',timestamp:'g','referral-code':'h',locale:'i','external-reference-id':'k',signature:'ab'};i=e.getElementsByTagName(z)[0];s=function(e,t){if(t){return''+e+'='+encodeURIComponent(t)}else{return''}};d=function(e){return''+p+h.getAttribute(t)+'.js?aa=75&'};if(!e.getElementById(l)){h=e.getElementById(c);if(h){o=e.createElement(z);o.id=l;a=function(){var e;e=[];for(n in r){u=r[n];v=h.getAttribute('data-'+n);e.push(s(u,v))}return e}();o.src='//'+d(h.getAttribute(t))+a.join('&');return i.parentNode.insertBefore(o,i)}}})(document);</script>
+<?php endif; ?>
