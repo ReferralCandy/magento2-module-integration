@@ -2,7 +2,7 @@
     "name": "referralcandy/magento2-module-integration",
     "description": "An extension to integrate ReferralCandy on your Magento store",
     "type": "magento2-module",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "ReferralCandy",
