@@ -2,6 +2,7 @@
     "name": "referralcandy/magento2-module-integration",
     "description": "An extension to integrate ReferralCandy on your Magento store",
     "type": "magento2-module",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "ReferralCandy",
@@ -10,9 +11,8 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "~5.5.0|~5.6.0|~7.0.0",
-        "magento/framework": "~103.0",
-        "magento/module-catalog": "~103.0"
+        "php": "~5.5.0|~5.6.0|^7.0.0",
+        "magento/module-checkout": "^100|^101|^102|^103|^104"
     },
     "autoload": {
         "files": [ "registration.php" ],
