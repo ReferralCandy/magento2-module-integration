@@ -40,7 +40,10 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
      */
     public function shouldTriggerJsPurchase()
     {
-        return $this->_enabled && !empty($this->_appId) && !empty($this->_apiSecretKey);
+        return ($this->_enabled
+                && !empty($this->_appId)
+                && !empty($this->_apiSecretKey)
+                && isset($this->_order));
     }
 
     /**
