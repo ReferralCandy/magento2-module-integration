@@ -1,23 +1,25 @@
 {
-    "name": "referralcandy/magento2-module-integration",
-    "description": "An extension to integrate ReferralCandy on your Magento store",
-    "type": "magento2-module",
-    "version": "1.0.0",
-    "authors": [
-        {
-            "name": "ReferralCandy",
-            "email": "engineering@referralcandy.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "php": "~5.5.0|~5.6.0|^7.0.0",
-        "magento/module-checkout": "^100|^101|^102|^103|^104"
-    },
-    "autoload": {
-        "files": [ "registration.php" ],
-        "psr-4": {
-            "ReferralCandy\\Integration\\": ""
-        }
+  "name": "referralcandy/magento2-module-integration",
+  "description": "An extension to integrate ReferralCandy on your Magento store",
+  "type": "magento2-module",
+  "version": "1.0.1",
+  "authors": [
+    {
+      "name": "ReferralCandy",
+      "email": "engineering@referralcandy.com"
     }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": "~5.5.0|~5.6.0|^7.0.0",
+    "magento/module-checkout": "^100|^101|^102|^103|^104"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "ReferralCandy\\Integration\\": ""
+    }
+  }
 }
