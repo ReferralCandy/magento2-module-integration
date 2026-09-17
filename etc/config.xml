@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+    Defaults for the ReferralCandy configuration section.
+
+    `purchase_domain` exists so the extension can be pointed at a staging or local
+    ReferralCandy while it is being tested. Before this the host was a literal inside the
+    storefront JS, which meant the only way to exercise the module end to end was to send
+    real purchase data to production — so in practice it was never exercised at all.
+    Deliberately NOT exposed in etc/adminhtml/system.xml: a development-only knob does not
+    belong in a merchant's configuration screen. The consequence is that `bin/magento
+    config:set` will not accept it — it validates paths against system.xml — so a test store
+    overrides it by writing core_config_data directly:
+
+        INSERT INTO core_config_data (scope, scope_id, path, value)
+        VALUES ('default', 0, 'referralcandy/rc_general/purchase_domain', '<host>')
+        ON DUPLICATE KEY UPDATE value = VALUES(value);
+
+    followed by `bin/magento cache:flush config`. This is a stopgap; the real fix for making
+    the extension testable without touching production is still open.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <referralcandy>
+            <rc_general>
+                <purchase_domain>go.referralcandy.com</purchase_domain>
+            </rc_general>
+        </referralcandy>
+    </default>
+</config>
