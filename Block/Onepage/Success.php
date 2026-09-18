@@ -38,21 +38,27 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
 
     /**
      * Check whether the purchase script should be rendered and triggered
+     *
+     * The order timestamp is part of the signature AND a separate data attribute, so a
+     * missing one is not a cosmetic gap: the snippet would render, the signature would be
+     * computed over an empty string, and ReferralCandy would reject every purchase while
+     * the storefront looked healthy. Render nothing instead of something silently broken.
      */
     public function shouldTriggerJsPurchase()
     {
         return ($this->_enabled
                 && !empty($this->_appId)
                 && !empty($this->_apiSecretKey)
-                && isset($this->_order));
+                && isset($this->_order)
+                && $this->getOrderTimestamp() !== null);
     }
 
     /**
      * Host the storefront tracking script is loaded from.
      *
-     * Defaults to production via etc/config.xml; a developer points a test store at a
-     * staging or tunnelled ReferralCandy with
-     * `bin/magento config:set referralcandy/rc_general/purchase_domain <host>`.
+     * Defaults to production via etc/config.xml. The path is deliberately absent from
+     * etc/adminhtml/system.xml, so `bin/magento config:set` will not accept it; a test
+     * store overrides it in app/etc/env.php instead (see etc/config.xml).
      * Returning the default rather than an empty string matters: a blank host would
      * build a same-origin script URL that 404s on the merchant's own storefront.
      */
@@ -114,6 +120,9 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
      * UTC the timestamp is shifted by the local offset — and because that value is also
      * part of the signature, the signature still verifies while the purchase time is
      * wrong. Neither side reports anything. Parse the zone explicitly instead.
+     *
+     * Returns null when there is nothing parseable to return; shouldTriggerJsPurchase()
+     * treats that as a reason to render no snippet at all.
      */
     private function getOrderTimestamp()
     {
