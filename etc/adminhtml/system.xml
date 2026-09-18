@@ -18,20 +18,27 @@
                     <comment>Please make sure that all your keys have been added first before enabling. Keys can be found on your ReferralCandy dashboard's integration page.</comment>
                 </field>
 
-                <field id="app_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="app_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>APP ID</label>
                     <validate>required-entry no-whitespace</validate>
                 </field>
 
-                <field id="api_access_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="api_access_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>API Access ID</label>
                     <validate>required-entry no-whitespace</validate>
                 </field>
 
-                <field id="api_secret_key" translate="label" type="password" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                <!--
+                    `type="password"` only masks the admin input. Without the Encrypted
+                    backend model the value is written to `core_config_data` in the clear,
+                    so it travels into every config dump and database backup from there.
+                -->
+                <field id="api_secret_key" translate="label" type="obscure" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>API Secret Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <validate>required-entry no-whitespace</validate>
                 </field>
+
             </group>
         </section>
     </system>
