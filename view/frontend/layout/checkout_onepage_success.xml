@@ -1,8 +1,15 @@
 <?xml version="1.0"?>
+<!--
+    The block class is named directly here. It used to be declared as the CORE
+    `Magento\Checkout\Block\Onepage\Success`, resolving to ours only through a global
+    `preference` in etc/di.xml — which rewrote that class for every other extension on
+    the store too, so whichever module loaded last silently won. Naming our own class
+    needs no rewrite and cannot conflict.
+-->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
   <body>
     <referenceContainer name="order.success.additional.info">
-      <block class="Magento\Checkout\Block\Onepage\Success" name="custom.order.success"
+      <block class="ReferralCandy\Integration\Block\Onepage\Success" name="referralcandy.order.success"
         template="ReferralCandy_Integration::order/success.phtml" after="-">
       </block>
     </referenceContainer>
