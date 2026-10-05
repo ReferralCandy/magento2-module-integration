@@ -169,7 +169,7 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
         /**
          * MD5 is used by ReferralCandy to generate a signature
          */
-        $divData['signature'] = md5(join(',', $signatureParams));
+        $divData['signature'] = hash('md5', implode(',', $signatureParams));
 
         return $divData;
     }
